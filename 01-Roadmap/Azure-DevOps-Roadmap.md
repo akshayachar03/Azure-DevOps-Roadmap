@@ -1,526 +1,484 @@
-# Azure DevOps Roadmap
+# Azure Engineering Handbook
 
-> **Repository:** Azure-DevOps-Roadmap
-> **Document:** `01-Roadmap/Azure-DevOps-Roadmap.md`
-
----
-
-# Table of Contents
-
-1. Repository Overview
-2. Learning Philosophy
-3. Current Skill Assessment
-4. Target Roles
-5. Azure DevOps Engineer Skill Matrix
-6. Learning Dependency Graph
-7. Complete Learning Roadmap
-8. Weekly Learning Plan
-9. Monthly Milestones
-10. Interview Readiness Checkpoints
-11. Enterprise Projects
-12. Revision Strategy
-13. Learning Resources
-
----
-
-# Repository Overview
+# Azure DevOps / Azure Cloud / Platform Engineering Roadmap
 
 ## Goal
 
-This repository is designed to transform an Infrastructure/Technical Support Engineer into a Production-Ready Azure DevOps Engineer, Azure Cloud Engineer, Platform Engineer, and Site Reliability Engineer (SRE).
+Become a Production Ready
 
-The focus is **not certification**, but practical engineering skills required to design, automate, deploy, monitor, secure, and troubleshoot enterprise cloud environments.
-
-By the end of this roadmap, you should be able to:
-
-* Design Azure cloud architectures
-* Build Infrastructure as Code (IaC)
-* Automate deployments
-* Build CI/CD pipelines
-* Manage Kubernetes clusters
-* Implement monitoring and observability
-* Troubleshoot production incidents
-* Optimize cloud costs
-* Secure Azure environments
-* Handle real-world operational scenarios
+- Azure Cloud Engineer
+- Azure DevOps Engineer
+- Platform Engineer
+- Site Reliability Engineer (SRE)
 
 ---
 
-# Learning Philosophy
+# Stage 0 - Foundation
 
-Every topic in this repository follows the same learning pattern:
+## Duration
 
-1. Learn the concept.
-2. Understand why it exists.
-3. Learn how it works internally.
-4. Build it manually.
-5. Automate it.
-6. Secure it.
-7. Monitor it.
-8. Troubleshoot it.
-9. Optimize it.
-10. Deploy it in a production-like lab.
-11. Revise it.
-12. Prepare for interviews.
-
-This approach mirrors the lifecycle of real cloud engineering work.
-
----
-
-# Current Skill Assessment
-
-## Existing Skills
-
-* Linux Administration
-* Windows Server Administration
-* IIS
-* Apache
-* Nginx
-* DNS
-* SSL/TLS
-* Networking
-* Virtualization
-* Technical Support
-* Troubleshooting
-
-## Skills to Acquire
-
-* Azure Resource Manager (ARM)
-* Azure Resource Organization
-* Azure Networking
-* Azure Identity
-* Azure Security
-* Azure Storage
-* Azure Monitoring
-* Azure Governance
-* Azure Compute
-* Infrastructure as Code
-* Azure DevOps
-* GitHub Actions
-* Terraform
-* Bicep
-* Docker
-* Kubernetes
-* AKS
-* Helm
-* GitOps
-* Platform Engineering
-* SRE
-* Observability
-* Cloud Security
-* Enterprise Architecture
-
----
-
-# Target Roles
-
-## Primary
-
-* Azure DevOps Engineer
-* Azure Cloud Engineer
-* Azure Platform Engineer
-* Site Reliability Engineer
-
-## Secondary
-
-* Cloud Infrastructure Engineer
-* Azure Administrator
-* DevSecOps Engineer
-* Platform Operations Engineer
-* Cloud Consultant
-
----
-
-# Azure DevOps Engineer Skill Matrix
-
-| Skill                | Interview Frequency | Enterprise Importance | Priority |
-| -------------------- | ------------------- | --------------------- | -------- |
-| Azure Fundamentals   | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| Azure Networking     | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| Azure Compute        | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| Azure Storage        | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| Microsoft Entra ID   | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| Azure Security       | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| Azure Monitor        | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| Azure DevOps         | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| Git                  | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| Terraform            | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| Docker               | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| Kubernetes           | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| AKS                  | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| Helm                 | ⭐⭐⭐⭐                | ⭐⭐⭐⭐                  | High     |
-| Ansible              | ⭐⭐⭐                 | ⭐⭐⭐⭐                  | Medium   |
-| Bash                 | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| Python               | ⭐⭐⭐⭐                | ⭐⭐⭐⭐                  | High     |
-| SRE                  | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-| Platform Engineering | ⭐⭐⭐⭐                | ⭐⭐⭐⭐⭐                 | High     |
-| System Design        | ⭐⭐⭐⭐⭐               | ⭐⭐⭐⭐⭐                 | Critical |
-
----
-
-# Azure Learning Dependency Graph
-
-```text
-Computer Fundamentals
-        │
-        ▼
-Operating Systems
-        │
-        ▼
-Networking
-        │
-        ▼
-Virtualization
-        │
-        ▼
-Cloud Computing
-        │
-        ▼
-Azure Fundamentals
-        │
-        ▼
-Azure Architecture
-        │
-        ▼
-Azure Identity
-        │
-        ▼
-Azure Networking
-        │
-        ▼
-Azure Storage
-        │
-        ▼
-Azure Compute
-        │
-        ▼
-Azure Security
-        │
-        ▼
-Azure Monitoring
-        │
-        ▼
-Azure Governance
-        │
-        ▼
-Git
-        │
-        ▼
-Azure DevOps
-        │
-        ▼
-Terraform
-        │
-        ▼
-Containers
-        │
-        ▼
-Docker
-        │
-        ▼
-Kubernetes
-        │
-        ▼
-AKS
-        │
-        ▼
-GitOps
-        │
-        ▼
-Observability
-        │
-        ▼
-Platform Engineering
-        │
-        ▼
-Site Reliability Engineering
-        │
-        ▼
-Enterprise Architecture
-```
-
----
-
-# Complete Learning Roadmap
-
-## Phase 0 – Foundation Validation
-
-### Objective
-
-Validate prerequisite infrastructure knowledge before beginning Azure.
-
-| Topic          | Why Learn                               | Interview Frequency | Difficulty | Duration |
-| -------------- | --------------------------------------- | ------------------- | ---------- | -------- |
-| Linux Basics   | Azure workloads frequently run on Linux | Very High           | Easy       | 1 Day    |
-| Windows Server | Enterprise hybrid environments          | High                | Easy       | 1 Day    |
-| Networking     | Core of cloud infrastructure            | Very High           | Medium     | 3 Days   |
-| DNS            | Required for every application          | Very High           | Easy       | 1 Day    |
-| HTTP/HTTPS     | Web application communication           | Very High           | Easy       | 1 Day    |
-| SSL/TLS        | Secure communication                    | Very High           | Medium     | 1 Day    |
-| Virtualization | Understand cloud abstraction            | High                | Medium     | 2 Days   |
-| JSON & YAML    | Used in Azure templates and pipelines   | High                | Easy       | 1 Day    |
-| REST APIs      | Azure services expose REST APIs         | High                | Medium     | 2 Days   |
-
-### Hands-on
-
-* Configure Apache and Nginx
-* Create DNS records
-* Install SSL certificates
-* Capture packets using `tcpdump`
-* Analyze logs using `journalctl`
-* Use `curl` to interact with REST APIs
-
-### Interview Checkpoint
-
-You should be able to explain:
-
-* DNS resolution
-* TCP handshake
-* HTTPS workflow
-* SSL certificate chain
-* Reverse proxy
-* Load balancing
-* Virtualization vs Containers
-
----
-
-# Phase 1 – Azure Fundamentals
-
-## Why Learn This?
-
-Azure Fundamentals introduces the core concepts of cloud computing and Azure services. Without this foundation, advanced topics such as networking, identity, and DevOps become difficult to understand.
-
-## Why Companies Ask This
-
-Interviewers assess whether you understand the building blocks of Azure before moving into implementation and troubleshooting.
-
-## Real-World Usage
-
-Every Azure engineer works with:
-
-* Subscriptions
-* Resource Groups
-* Regions
-* Availability Zones
-* Azure Portal
-* Azure CLI
-* ARM
-* Cost Management
-
-## Interview Frequency
-
-⭐⭐⭐⭐⭐
-
-## Priority
-
-Critical
-
-## Difficulty
-
-Beginner
-
-## Estimated Learning Time
-
-* Theory: 12 Hours
-* Hands-on: 18 Hours
-* Revision: 5 Hours
+2 Weeks
 
 ## Prerequisites
 
-* Basic networking
-* Operating system knowledge
-* Virtualization concepts
+Already Completed (Review Only)
 
-## Topics Covered
+### Operating Systems
+
+- Linux Administration
+- Windows Server
+- Process Management
+- Services
+- Package Management
+- File System
+- Permissions
+- Systemd
+- Logs
+
+### Networking
+
+- OSI Model
+- TCP/IP
+- IP Addressing
+- CIDR
+- Routing
+- Switching
+- NAT
+- DNS
+- DHCP
+- HTTP
+- HTTPS
+- SSL/TLS
+- Firewalls
+- Reverse Proxy
+- Load Balancing
+
+### Virtualization
+
+- Hypervisors
+- VMware
+- Hyper-V
+- VirtualBox
+- KVM
+
+### Scripting
+
+- Bash
+- PowerShell Basics
+- Python Basics
+
+### Data Formats
+
+- JSON
+- YAML
+- XML
+
+### APIs
+
+- REST API
+- HTTP Methods
+- Status Codes
+- Authentication
+
+---
+
+## Hands-on
+
+- Configure Apache
+- Configure Nginx
+- Configure IIS
+- Generate SSL Certificate
+- Configure DNS
+- Analyze Logs
+- Packet Capture
+- Curl
+- SSH
+
+---
+
+## Mini Project
+
+Deploy a LAMP Stack manually.
+
+---
+
+# Stage 1 — Azure Administrator
+
+Estimated Duration: 8–10 Weeks
+
+---
+
+# Phase 1 — Azure Fundamentals
+
+Duration: 2 Weeks
+
+## Learn
 
 ### Cloud Computing
 
-* Evolution of Cloud
-* Characteristics
-* Deployment Models
-* Service Models
-* Shared Responsibility Model
+- Evolution of Cloud
+- Characteristics
+- Public Cloud
+- Private Cloud
+- Hybrid Cloud
+- Multi Cloud
+
+### Cloud Service Models
+
+- IaaS
+- PaaS
+- SaaS
+- FaaS
 
 ### Azure Basics
 
-* Azure Portal
-* Azure CLI
-* Azure PowerShell
-* Azure Resource Manager
-* Azure Resource Groups
-* Azure Subscriptions
-* Azure Regions
-* Azure Availability Zones
-* Azure Availability Sets
-* Azure Resource Locks
-* Azure Tags
+- Azure Portal
+- Azure CLI
+- Azure PowerShell
+- Azure Resource Manager (ARM)
+- Azure Subscription
+- Resource Groups
+- Azure Regions
+- Region Pairs
+- Availability Zones
+- Availability Sets
+- Resource Locks
+- Tags
 
 ### Cost Management
 
-* Pricing Calculator
-* Azure Cost Analysis
-* Budgets
-* Reservations
-* Azure Hybrid Benefit
+- Pricing Calculator
+- Cost Analysis
+- Budgets
+- Reservations
+- Azure Hybrid Benefit
 
-### Hands-on Labs
+### Azure Advisor
 
-* Create Azure Account
-* Create Resource Group
-* Deploy VM
-* Delete VM
-* Apply Tags
-* Apply Locks
-* Estimate Costs
-* Use Azure CLI
-* Use PowerShell
+### Azure Service Health
 
-### Mini Project
-
-Deploy a simple Linux virtual machine, organize resources using Resource Groups, apply governance through Tags and Locks, and estimate monthly costs.
-
-### Enterprise Project
-
-Build a multi-resource development environment with naming conventions, tagging standards, budgets, and governance policies suitable for an enterprise subscription.
-
-### Interview Readiness
-
-After completing this phase, you should be able to answer:
-
-* What is Azure?
-* What is Cloud Computing?
-* Explain IaaS, PaaS, SaaS.
-* Explain Resource Groups.
-* Difference between Availability Set and Availability Zone.
-* Explain ARM.
-* Explain Azure Regions.
-* Explain Shared Responsibility Model.
-* Explain Azure Pricing.
-* Explain Azure Resource hierarchy.
+### Azure Resource Graph
 
 ---
 
-# Phase 2 – Azure Architecture
+## Hands-on
 
-## Why Learn This?
+- Create Subscription
+- Create Resource Group
+- Deploy VM
+- Create Storage
+- Apply Tags
+- Apply Locks
+- Azure CLI
+- PowerShell
 
-Architecture defines how Azure services interact to deliver secure, scalable, resilient, and cost-effective solutions. Understanding architecture before individual services helps you make informed design decisions.
+---
 
-## Why Companies Ask This
+## Mini Project
 
-Engineers are expected to justify design choices, not just deploy resources. Architecture questions are common in mid-level and senior interviews.
+Deploy a Production Linux VM using Azure Portal and CLI.
 
-## Real-World Usage
+---
 
-Architecture skills are used when designing:
+## Interview Checkpoint
 
-* Multi-tier web applications
-* Hybrid cloud solutions
-* Disaster recovery strategies
-* High availability deployments
-* Enterprise landing zones
+You should confidently explain:
 
-## Interview Frequency
+- ARM
+- Resource Group
+- Subscription
+- Availability Zone
+- Region Pair
+- Shared Responsibility Model
+- Azure Pricing
 
-⭐⭐⭐⭐⭐
+---
 
-## Priority
+# Phase 2 — Azure Architecture
 
-Critical
+Duration: 2 Weeks
 
-## Difficulty
+## Learn
 
-Intermediate
+- Azure Global Infrastructure
+- ARM Architecture
+- Azure Landing Zones
+- Cloud Adoption Framework
+- Azure Well-Architected Framework
+- Management Groups
+- Resource Organization
+- Naming Conventions
+- Enterprise Design
+- High Availability
+- Disaster Recovery
+- Scalability
+- Fault Tolerance
+- Reliability
+- Performance
+- Cost Optimization
 
-## Estimated Learning Time
+---
 
-* Theory: 15 Hours
-* Hands-on: 20 Hours
-* Revision: 6 Hours
+## Hands-on
 
-## Prerequisites
+- Design Landing Zone
+- Configure Management Groups
+- Create Naming Standards
+- Design Multi-Region Architecture
 
-* Azure Fundamentals
-* Networking Basics
+---
 
-## Topics Covered
+## Mini Project
 
-### Azure Global Infrastructure
+Design Enterprise Azure Architecture.
 
-* Regions
-* Region Pairs
-* Availability Zones
-* Edge Locations
-* Datacenters
+---
 
-### Azure Resource Manager
+## Interview Checkpoint
 
-* Resource Providers
-* Resource Hierarchy
-* ARM Architecture
-* ARM Templates
+- Landing Zones
+- CAF
+- Well-Architected Framework
+- Region Pair
+- Availability Zone
+- HA vs DR
 
-### Well-Architected Framework
+---
 
-* Reliability
-* Security
-* Cost Optimization
-* Performance Efficiency
-* Operational Excellence
+# Phase 3 — Azure Compute
 
-### Cloud Adoption Framework (CAF)
+Duration: 2 Weeks
 
-* Strategy
-* Plan
-* Ready
-* Adopt
-* Govern
-* Manage
+## Learn
 
-### Azure Landing Zones
+### Virtual Machines
 
-* Enterprise Scale Landing Zones
-* Management Groups
-* Policies
-* RBAC
-* Networking Design
+- VM Sizes
+- VM Series
+- Availability Sets
+- Availability Zones
+- VM Scale Sets
+- Managed Disks
+- Ephemeral Disks
+- Custom Images
+- Shared Image Gallery
+- Extensions
+- Azure Bastion
 
-### Design Patterns
+### App Services
 
-* Stateless Applications
-* Multi-Tier Architecture
-* Hub-and-Spoke Network
-* Shared Services
-* High Availability
-* Disaster Recovery
+- Web Apps
+- API Apps
+- Deployment Slots
+- Scaling
+- Custom Domains
+- SSL
 
-### Hands-on Labs
+### Azure Functions
 
-* Build Hub-and-Spoke architecture
-* Deploy ARM templates
-* Explore Azure Resource Graph
-* Design Landing Zone hierarchy
-* Configure Management Groups
+### Container Apps
 
-### Mini Project
+### Azure Batch
 
-Design a secure Azure environment for a small organization with separate Development, Testing, and Production subscriptions using Management Groups and Resource Groups.
+---
 
-### Enterprise Project
+## Hands-on
 
-Create a reference architecture for a global e-commerce platform using multiple Azure regions, Availability Zones, virtual networks, centralized identity, monitoring, and governance.
+- Deploy Linux VM
+- Deploy Windows VM
+- Configure Bastion
+- Create VMSS
+- Deploy Web App
+- Configure Autoscaling
 
-### Interview Readiness
+---
 
-After completing this phase, you should be able to explain:
+## Mini Project
 
-* Azure global infrastructure
-* Region pairs
-* Landing Zones
-* Azure Well-Architected Framework
-* Cloud Adoption Framework
-* ARM architecture
-* Hub-and-Spoke networking
-* Multi-region deployments
-* High availability
-* Disaster recovery
+Deploy Highly Available Web Application.
+
+---
+
+# Phase 4 — Azure Networking
+
+Duration: 3 Weeks
+
+## Learn
+
+### Networking Basics
+
+- Virtual Network
+- Address Space
+- Subnets
+- NIC
+- Public IP
+- Private IP
+
+### Security
+
+- NSG
+- ASG
+- Azure Firewall
+- DDoS Protection
+- WAF
+
+### Connectivity
+
+- VNet Peering
+- VPN Gateway
+- ExpressRoute
+- Virtual WAN
+
+### DNS
+
+- Azure DNS
+- Private DNS
+
+### Routing
+
+- Route Tables
+- UDR
+- BGP
+
+### Load Balancing
+
+- Azure Load Balancer
+- Application Gateway
+- Front Door
+- Traffic Manager
+
+### Private Connectivity
+
+- Service Endpoints
+- Private Endpoint
+- Private Link
+
+---
+
+## Hands-on
+
+- Build Hub-Spoke
+- Configure Firewall
+- Configure VPN
+- Configure Application Gateway
+- Configure Private Endpoint
+
+---
+
+## Mini Project
+
+Enterprise Hub-Spoke Network
+
+---
+
+# Phase 5 — Azure Storage
+
+Duration: 2 Weeks
+
+## Learn
+
+- Storage Accounts
+- Blob Storage
+- File Storage
+- Queue Storage
+- Table Storage
+- Managed Disks
+- Azure Files
+- Azure NetApp Files
+- Replication
+- Access Tiers
+- SAS
+- Shared Keys
+- Lifecycle Management
+- Storage Security
+- Private Endpoint
+- Backup
+- Azure Backup
+- Azure Site Recovery
+
+---
+
+## Hands-on
+
+- Create Storage
+- Mount Azure Files
+- Configure Backup
+- Configure Lifecycle
+
+---
+
+## Mini Project
+
+Enterprise Backup Storage
+
+---
+
+# Phase 6 — Identity
+
+Duration: 2 Weeks
+
+## Learn
+
+- Microsoft Entra ID
+- Tenant
+- Users
+- Groups
+- RBAC
+- Managed Identity
+- Service Principal
+- App Registration
+- Conditional Access
+- MFA
+- PIM
+- Hybrid Identity
+- Azure AD Connect
+
+---
+
+## Hands-on
+
+- Configure RBAC
+- Configure Managed Identity
+- Configure MFA
+- Configure Conditional Access
+
+---
+
+## Mini Project
+
+Enterprise Identity Solution
+
+---
+
+# Phase 7 — Security
+
+Duration: 2 Weeks
+
+## Learn
+
+- Azure Key Vault
+- Defender for Cloud
+- Microsoft Sentinel
+- Azure Policy
+- Azure Blueprints (Concepts)
+- Encryption
+- JIT Access
+- Secrets
+- Certificates
+- Compliance
+- Secure Score
+
+---
+
+## Hands-on
+
+- Configure Key Vault
+- Store Secrets
+- Enable Defender
+- Create Policies
+
+---
+
+## Mini Project
+
+Secure Azure Subscription
