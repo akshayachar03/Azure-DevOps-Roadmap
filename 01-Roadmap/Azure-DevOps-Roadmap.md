@@ -1,7 +1,5 @@
 # Azure Engineering Handbook
 
-# Azure DevOps / Azure Cloud / Platform Engineering Roadmap
-
 ## Goal
 
 Become a Production Ready
