@@ -1,0 +1,403 @@
+# Azure App Service
+
+## Definition
+
+- Azure App Service is a fully managed Platform as a Service (PaaS) used to build, deploy, and host web applications, REST APIs, and mobile backends.
+- Microsoft manages the underlying infrastructure, operating system, runtime, patching, and scaling.
+- Developers only need to focus on writing and deploying application code.
+
+---
+
+## Why is it used?
+
+- Host web applications.
+- Deploy REST APIs.
+- Reduce infrastructure management.
+- Enable automatic scaling.
+- Integrate with CI/CD pipelines.
+- Improve application availability.
+
+---
+
+## Key Features
+
+- Fully managed PaaS service.
+- Supports .NET, Java, Node.js, Python, PHP, and Ruby.
+- Built-in Auto Scaling.
+- Deployment Slots.
+- Custom Domains and SSL.
+- Built-in Authentication.
+- Continuous Deployment support.
+- Backup and Restore.
+- Monitoring with Azure Monitor and Application Insights.
+
+---
+
+## Advantages
+
+- No server management.
+- Fast application deployment.
+- Built-in security.
+- Automatic OS updates.
+- Easy scaling.
+- Supports DevOps integration.
+
+---
+
+## Disadvantages
+
+- Less control over the operating system.
+- Not suitable for applications requiring full server access.
+- Pricing may increase for high-performance plans.
+
+---
+
+## Components
+
+### App Service Plan
+
+- Defines compute resources (CPU, Memory, Region, Pricing Tier).
+
+### Web App
+
+- Hosts websites and web applications.
+
+### API App
+
+- Hosts REST APIs.
+
+### Deployment Slots
+
+- Used for staging and production deployments.
+
+### Custom Domain
+
+- Maps your own domain to the application.
+
+---
+
+## Workflow
+
+```text
+Developer
+     ↓
+Push Application Code
+     ↓
+Azure App Service
+     ↓
+Build & Deploy
+     ↓
+Application Available
+```
+
+---
+
+## Real-world Example
+
+A company hosts its online shopping website on Azure App Service. Developers deploy new versions through GitHub Actions without managing virtual machines.
+
+---
+
+## Interview Tip
+
+"Azure App Service is a PaaS offering where Microsoft manages the infrastructure while developers focus only on building and deploying applications."
+
+---
+
+## Quick Revision
+
+- Fully managed PaaS.
+- Hosts Web Apps and APIs.
+- No server management.
+- Supports multiple programming languages.
+- Built-in scaling.
+- Supports CI/CD.
+- Uses App Service Plans.
+
+---
+
+## Important Interview Questions
+
+1. What is Azure App Service?
+2. Why is App Service considered a PaaS service?
+3. What is an App Service Plan?
+4. Which programming languages are supported?
+5. What are the advantages of Azure App Service?
+
+---
+
+# Azure App Service Deployment Slots
+
+## Definition
+
+- Deployment Slots are separate environments within an Azure App Service.
+- They allow you to deploy and test a new version of an application before making it live.
+- Common slots include **Production**, **Staging**, and **Testing**.
+
+---
+
+## Why is it used?
+
+- Test applications before production.
+- Reduce deployment downtime.
+- Enable safe application updates.
+- Perform quick rollback if deployment fails.
+- Support Blue-Green deployments.
+
+---
+
+## Key Features
+
+- Zero-downtime deployment.
+- Slot swapping.
+- Independent application settings.
+- Easy rollback.
+- Warm-up before production.
+- Multiple deployment slots (depends on App Service Plan).
+
+---
+
+## Advantages
+
+- Safer deployments.
+- Minimal downtime.
+- Quick rollback.
+- Better testing environment.
+- Improved application availability.
+
+---
+
+## Disadvantages
+
+- Not available in the Free tier.
+- Number of slots depends on the App Service Plan.
+
+---
+
+## Components
+
+### Production Slot
+
+- Live application used by customers.
+
+### Staging Slot
+
+- Used for testing before production.
+
+### Slot Swap
+
+- Exchanges staging and production environments.
+
+---
+
+## Workflow
+
+```text
+Deploy New Version
+        ↓
+Staging Slot
+        ↓
+Testing
+        ↓
+Swap Slots
+        ↓
+Production
+```
+
+---
+
+## Real-world Example
+
+An e-commerce company deploys a new version to the Staging slot, tests payment functionality, and then swaps it with the Production slot without downtime.
+
+---
+
+## Interview Tip
+
+"Deployment Slots allow zero-downtime deployments by testing applications in staging before swapping them into production."
+
+---
+
+## Quick Revision
+
+- Multiple deployment environments.
+- Production and Staging slots.
+- Supports slot swapping.
+- Enables zero downtime.
+- Easy rollback.
+- Ideal for production deployments.
+
+---
+
+## Important Interview Questions
+
+1. What are Deployment Slots?
+2. Why are Deployment Slots used?
+3. What is Slot Swapping?
+4. Can Deployment Slots reduce downtime?
+5. Which App Service Plans support Deployment Slots?
+
+---
+
+# Azure Functions
+
+## Definition
+
+- Azure Functions is a **serverless compute service** that allows developers to run code without managing servers.
+- Code is executed only when triggered by an event.
+- Billing is based on execution time and resource consumption.
+
+---
+
+## Why is it used?
+
+- Build event-driven applications.
+- Automate background tasks.
+- Process files and images.
+- Respond to HTTP requests.
+- Integrate Azure services.
+- Reduce infrastructure management.
+
+---
+
+## Key Features
+
+- Serverless architecture.
+- Event-driven execution.
+- Automatic scaling.
+- Pay-per-execution pricing (Consumption Plan).
+- Multiple language support.
+- Easy integration with Azure services.
+- Supports Durable Functions for workflows.
+
+---
+
+## Advantages
+
+- No server management.
+- Automatic scaling.
+- Cost-effective.
+- Fast deployment.
+- Ideal for small tasks and automation.
+
+---
+
+## Disadvantages
+
+- Cold start delay in Consumption Plan.
+- Execution time limits in some hosting plans.
+- Not suitable for long-running applications without Durable Functions.
+
+---
+
+## Components
+
+### Function App
+
+- Container that hosts one or more Azure Functions.
+
+### Function
+
+- Individual piece of executable code.
+
+### Trigger
+
+- Starts the execution of a function.
+
+### Input Binding
+
+- Reads data from another service automatically.
+
+### Output Binding
+
+- Writes data to another service automatically.
+
+---
+
+## Common Trigger Types
+
+| Trigger | Use Case |
+|----------|----------|
+| HTTP Trigger | REST APIs and webhooks |
+| Timer Trigger | Scheduled jobs |
+| Blob Trigger | Process uploaded files |
+| Queue Trigger | Process queue messages |
+| Event Grid Trigger | React to Azure events |
+| Service Bus Trigger | Enterprise messaging |
+| Cosmos DB Trigger | React to database changes |
+
+---
+
+## Workflow
+
+```text
+Event Occurs
+      ↓
+Trigger Activated
+      ↓
+Azure Function Executes
+      ↓
+Process Data
+      ↓
+Return Response / Store Output
+```
+
+---
+
+## Hosting Plans
+
+| Hosting Plan | Description |
+|--------------|-------------|
+| Consumption Plan | Pay only when functions execute; automatic scaling |
+| Premium Plan | Faster startup, no cold starts, advanced scaling |
+| Dedicated (App Service) Plan | Runs on reserved App Service resources |
+
+---
+
+## Real-world Example
+
+Whenever a user uploads an image to Azure Blob Storage, an Azure Function automatically resizes the image and stores the optimized version in another container.
+
+---
+
+## Interview Tip
+
+"Azure Functions is a serverless compute service where code runs only when triggered by an event, eliminating the need to manage servers."
+
+---
+
+## Quick Revision
+
+- Serverless compute service.
+- Event-driven execution.
+- Automatic scaling.
+- Pay-per-execution.
+- Uses Triggers and Bindings.
+- Supports multiple programming languages.
+- Ideal for automation and microservices.
+
+---
+
+## Important Interview Questions
+
+1. What is Azure Functions?
+2. What is serverless computing?
+3. What are Triggers and Bindings?
+4. What are the different Azure Function hosting plans?
+5. What is the difference between Azure Functions and Azure App Service?
+
+---
+
+# Azure App Service vs Azure Functions
+
+| Feature | Azure App Service | Azure Functions |
+|----------|-------------------|-----------------|
+| Service Type | PaaS | Serverless (FaaS) |
+| Best For | Web Apps, APIs | Event-driven tasks |
+| Server Management | No | No |
+| Scaling | Manual or Auto Scale | Automatic |
+| Billing | Based on App Service Plan | Pay per execution (Consumption Plan) |
+| Runs Continuously | Yes | Only when triggered |
+| Typical Use Cases | Websites, REST APIs | Automation, scheduled jobs, event processing |
+| Supports Deployment Slots | Yes | No (Functions themselves do not use deployment slots in the same way as Web Apps) |
+| Example | E-commerce website | Resize uploaded images automatically |
