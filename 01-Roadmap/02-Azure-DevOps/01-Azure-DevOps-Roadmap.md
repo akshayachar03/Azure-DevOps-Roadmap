@@ -1,90 +1,151 @@
 # Azure DevOps Essential Interview Roadmap
 
-## 1. DevOps Fundamentals
-- SDLC
-- Agile & Scrum
-- DevOps Lifecycle
-- CI/CD
-- Infrastructure as Code (IaC)
-
-## 2. Git
-- Git Workflow
-- Clone, Commit, Push, Pull
-- Branching
-- Merge
-- Rebase
-- Pull Requests
-- Merge Conflicts
-- Branching Strategies
-
-## 3. Azure DevOps Basics
+## 1. Azure DevOps Fundamentals
+- What is Azure DevOps
 - Azure DevOps Services
-- Azure Repos
-- Azure Pipelines
-- Azure Boards
-- Organizations & Projects
+- Azure DevOps Organization
+- Projects
+- Users & Permissions
+- Personal Access Tokens (PAT)
 
-## 4. Azure Pipelines
-- CI Pipeline
-- CD Pipeline
-- YAML Pipelines
+## 2. Azure Repos
+- Git Repositories
+- Clone Repository
+- Branching
+- Commits
+- Pull Requests
+- Branch Policies
+- Repository Permissions
+
+## 3. Azure Pipelines Fundamentals
+- CI/CD Concepts
+- Pipeline Architecture
+- Build Pipeline
+- Release Pipeline
+- YAML vs Classic Pipelines
+- Pipeline Triggers
+
+## 4. Azure Pipeline YAML
+- Pipeline Structure
 - Stages
 - Jobs
 - Steps
+- Tasks
 - Variables
-- Triggers
-- Pipeline Artifacts
-- Multi-stage Pipelines
+- Variable Groups
+- Conditions
+- Templates
+- Parameters
 
-## 5. Build Agents
-- Microsoft-hosted Agents
-- Self-hosted Agents
-- Agent Pools
+## 5. Build Pipelines (CI)
+- Source Code Integration
+- Restore Dependencies
+- Build Application
+- Run Tests
+- Publish Build Artifacts
+- Build Triggers
 
-## 6. Service Connections & Secrets
+## 6. Release Pipelines (CD)
+- Deployment Pipelines
+- Deployment Stages
+- Deployment Jobs
+- Environment Approvals
+- Deployment Strategies
+- Deployment History
+
+## 7. Artifacts
+- Build Artifacts
+- Azure Artifacts
+- Publish Artifacts
+- Consume Artifacts
+
+## 8. Service Connections
 - Service Connections
-- Service Principals
+- Azure Resource Manager (ARM) Connection
+- Service Principal Authentication
+- Connection Permissions
+
+## 9. Variable & Secret Management
+- Pipeline Variables
 - Variable Groups
 - Secret Variables
-- Azure Key Vault
+- Runtime Variables
 
-## 7. Infrastructure as Code
-- Terraform Basics
-- ARM Templates (Basics)
-- Bicep (Basics)
+## 10. Azure Key Vault Integration
+- Store Secrets
+- Link Key Vault to Pipelines
+- Access Secrets in Pipelines
 
-## 8. Docker
-- Images
-- Containers
-- Dockerfile
-- Docker Compose
-- Azure Container Registry (ACR)
+## 11. Agents
+- Microsoft-Hosted Agents
+- Self-Hosted Agents
+- Agent Pools
+- Agent Capabilities
 
-## 9. Kubernetes
-- Pods
-- Deployments
-- Services
-- ConfigMaps
-- Secrets
-- Helm
-- Azure Kubernetes Service (AKS)
+## 12. Environments
+- Create Environments
+- Deployment Targets
+- Approvals & Checks
 
-## 10. Monitoring & Troubleshooting
-- Pipeline Logs
-- Build Failures
-- Deployment Failures
-- YAML Debugging
-- Agent Issues
+## 13. Common Pipeline Tasks
+- Checkout Source Code
+- Install Dependencies
+- Build
+- Test
+- Publish Artifacts
+- Download Artifacts
+- Azure CLI Task
+- PowerShell Task
+- Bash Task
 
-## 11. Security
-- Repository Permissions
-- Branch Policies
-- Secret Management
-- Pipeline Security
+## 14. Infrastructure Deployment
+- ARM Template Deployment
+- Bicep Deployment
+- Terraform Integration
+- Azure CLI Deployment
 
-## 12. Real-World Scenarios
-- End-to-End CI/CD Pipeline
-- Application Deployment
-- Docker Deployment
+## 15. Docker Integration
+- Build Docker Images
+- Push Images to Registry
+- Use Docker Tasks in Pipelines
+
+## 16. Kubernetes Integration
 - AKS Deployment
-- Terraform Deployment
+- Kubernetes Manifest Task
+- Kubectl Task
+
+## 17. Azure Boards
+- Work Items
+- Epics
+- Features
+- User Stories
+- Tasks
+- Backlogs
+- Boards
+- Sprints
+
+## 18. Security & Access Control
+- Users & Groups
+- Roles
+- Repository Permissions
+- Pipeline Permissions
+- Service Connection Permissions
+
+## 19. Monitoring & Troubleshooting
+- Pipeline Logs
+- Debug Logs
+- Failed Builds
+- Failed Deployments
+- Agent Issues
+- Common Pipeline Errors
+
+## 20. Essential Azure DevOps CLI & Pipeline Concepts
+- Azure DevOps CLI Basics
+- Pipeline Variables
+- Runtime Parameters
+- Build Artifacts
+- Release Artifacts
+- Manual Approval
+- Continuous Integration
+- Continuous Delivery
+- Continuous Deployment
