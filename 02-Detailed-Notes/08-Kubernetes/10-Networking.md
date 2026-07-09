@@ -2,11 +2,11 @@
 
 ## Overview
 
-Kubernetes Networking enables communication between Pods, Services, Nodes, and external clients. One of Kubernetes' core principles is that every Pod can communicate with every other Pod without Network Address Translation (NAT).
+Kubernetes Networking enables communication between Pods, Services, Nodes, and external clients. Kubernetes follows a **flat networking model**, where every Pod receives its own IP address and can communicate with every other Pod without Network Address Translation (NAT).
 
-Unlike traditional networking, Kubernetes abstracts networking complexity and provides built-in Service Discovery, Load Balancing, and Network Security.
+Unlike Docker networking, Kubernetes networking is **implemented by a Container Network Interface (CNI) plugin**, while Kubernetes itself defines the networking model.
 
-Kubernetes networking mainly consists of:
+The four major networking concepts are:
 
 - Pod Networking
 - Service Networking
@@ -15,9 +15,7 @@ Kubernetes networking mainly consists of:
 
 > **Interview Tip**
 >
-> Kubernetes **defines** the networking model but does **not implement it**.
->
-> Networking is implemented through **Container Network Interface (CNI)** plugins like:
+> Kubernetes **does not implement networking**. It relies on CNI plugins such as:
 >
 > - Calico
 > - Flannel
@@ -31,14 +29,14 @@ Kubernetes networking mainly consists of:
 
 Kubernetes Networking provides:
 
-- Pod-to-Pod communication
+- Communication between Pods
 - Service discovery
 - Internal load balancing
-- External application access
-- High availability
+- External access to applications
 - Secure communication
+- High availability
+- Traffic routing
 - Network isolation
-- Scalable microservices communication
 
 ---
 
@@ -46,60 +44,36 @@ Kubernetes Networking provides:
 
 ```mermaid
 flowchart TB
+    Client[External Client]
+    LB[LoadBalancer Service]
+    Service[Kubernetes Service]
+    Proxy[kube-proxy]
+    Pod1[Pod A]
+    Pod2[Pod B]
+    Pod3[Pod C]
 
-Client
-
-↓
-
-LoadBalancer
-
-↓
-
-Service
-
-↓
-
-kube-proxy
-
-↓
-
-Pod A
-
-Pod B
-
-Pod C
-
-↓
-
-Node Network
-
-↓
-
-Cluster Network
+    Client --> LB
+    LB --> Service
+    Service --> Proxy
+    Proxy --> Pod1
+    Proxy --> Pod2
+    Proxy --> Pod3
 ```
 
-Internal Networking Flow
+Internal Communication
 
 ```mermaid
 flowchart LR
+    App[Application]
+    DNS[CoreDNS]
+    Service[Service]
+    Endpoints[Endpoints]
+    Pod[Target Pod]
 
-Pod
-
-↓
-
-DNS Resolution
-
-↓
-
-Service
-
-↓
-
-Endpoints
-
-↓
-
-Target Pod
+    App --> DNS
+    DNS --> Service
+    Service --> Endpoints
+    Endpoints --> Pod
 ```
 
 ---
@@ -107,20 +81,20 @@ Target Pod
 ## Key Components
 
 | Component | Purpose |
-|-----------|----------|
+|------------|---------|
 | Pod Network | Communication between Pods |
-| Service | Stable network endpoint |
-| DNS (CoreDNS) | Service discovery |
+| Service | Stable endpoint |
+| CoreDNS | Service discovery |
 | kube-proxy | Routes Service traffic |
 | CNI Plugin | Implements networking |
+| Endpoints | Backend Pod IPs |
 | Network Policy | Controls network traffic |
-| Endpoints | Actual Pod IPs behind a Service |
 
 ---
 
 ## Types (if applicable)
 
-Networking Components
+Kubernetes Networking consists of:
 
 - Pod Networking
 - Service Networking
@@ -133,32 +107,15 @@ Networking Components
 
 ```mermaid
 flowchart LR
+    A[Create Pod]
+    B[Assign Pod IP]
+    C[Create Service]
+    D[Assign ClusterIP]
+    E[Create DNS Record]
+    F[Route Traffic]
+    G[Apply Network Policies]
 
-Create Pod
-
-↓
-
-Assign Pod IP
-
-↓
-
-Create Service
-
-↓
-
-Assign Cluster IP
-
-↓
-
-Create DNS Record
-
-↓
-
-Route Traffic
-
-↓
-
-Apply Network Policies
+    A --> B --> C --> D --> E --> F --> G
 ```
 
 ---
@@ -179,15 +136,15 @@ spec:
     app: nginx
 
   ports:
-  - port: 80
-    targetPort: 80
+    - port: 80
+      targetPort: 80
 ```
 
 ---
 
 ## Important Commands (if applicable)
 
-View Pods with IP
+View Pod IPs
 
 ```bash
 kubectl get pods -o wide
@@ -205,10 +162,10 @@ View Endpoints
 kubectl get endpoints
 ```
 
-View DNS Pods
+Describe Service
 
 ```bash
-kubectl get pods -n kube-system
+kubectl describe svc nginx-service
 ```
 
 View Network Policies
@@ -217,10 +174,10 @@ View Network Policies
 kubectl get networkpolicy
 ```
 
-Describe Service
+Check DNS
 
 ```bash
-kubectl describe svc nginx-service
+kubectl exec -it <pod-name> -- nslookup kubernetes.default
 ```
 
 ---
@@ -228,10 +185,10 @@ kubectl describe svc nginx-service
 ## Important Files (if applicable)
 
 | File | Purpose |
-|------|----------|
-| deployment.yaml | Pod networking |
-| service.yaml | Service networking |
-| networkpolicy.yaml | Network security |
+|------|---------|
+| deployment.yaml | Creates Pods |
+| service.yaml | Defines Service |
+| networkpolicy.yaml | Defines network rules |
 | coredns ConfigMap | DNS configuration |
 
 ---
@@ -239,55 +196,55 @@ kubectl describe svc nginx-service
 ## Real-World Use Cases
 
 - Microservices communication
+- Backend APIs
 - Database connectivity
-- Internal APIs
-- External application access
-- Secure workloads
+- Internal application communication
+- Secure production workloads
 - Multi-tier applications
-- Zero Trust networking
 
 ---
 
 ## Advantages
 
 - Flat networking model
-- Automatic service discovery
-- Built-in load balancing
+- Built-in service discovery
+- Automatic load balancing
 - Platform independent
-- Supports network security
 - Highly scalable
+- Supports secure communication
 
 ---
 
 ## Limitations
 
 - Requires CNI plugin
-- Network Policies require supported CNI
-- Networking becomes complex in large clusters
 - Pod IPs are temporary
+- Network Policies require supported CNI
+- Large clusters require networking expertise
 
 ---
 
 ## Common Interview Questions (Concept Only)
 
 - Explain Kubernetes networking.
-- Why does every Pod receive an IP?
-- What is the role of CNI?
+- What is a CNI plugin?
+- Does every Pod receive an IP address?
+- How do Pods communicate across Nodes?
 - What is kube-proxy?
-- How does Service Discovery work?
-- How does DNS work in Kubernetes?
-- What is a Network Policy?
+- What is Service Discovery?
 - Why shouldn't applications use Pod IPs?
+- How does DNS work?
+- What are Network Policies?
 
 ---
 
 ## Common Mistakes
 
-- Using Pod IPs directly
-- Forgetting Services provide stable endpoints
-- Assuming Kubernetes implements networking itself
-- Ignoring DNS
-- Assuming Network Policies work with every CNI
+- Using Pod IPs instead of Services
+- Assuming Kubernetes implements networking
+- Forgetting DNS
+- Incorrect Service selectors
+- Assuming Network Policies work without supported CNI
 
 ---
 
@@ -295,11 +252,11 @@ kubectl describe svc nginx-service
 
 | Problem | Cause | Solution |
 |----------|--------|----------|
-| Pod cannot communicate | CNI issue | Verify CNI |
-| Service unreachable | Selector mismatch | Verify labels |
-| DNS failure | CoreDNS issue | Check CoreDNS |
-| Traffic blocked | Network Policy | Review rules |
-| External access fails | Wrong Service type | Verify Service |
+| Pod communication fails | CNI issue | Verify CNI plugin |
+| Service not reachable | Wrong selector | Verify labels |
+| DNS resolution fails | CoreDNS issue | Check CoreDNS |
+| Traffic blocked | Network Policy | Review ingress/egress rules |
+| External access fails | Wrong Service type | Verify Service configuration |
 
 Useful Commands
 
@@ -319,7 +276,7 @@ kubectl exec -it <pod-name> -- nslookup kubernetes.default
 
 ## Summary
 
-Kubernetes Networking provides seamless communication between Pods, Services, and external clients through Pod Networking, Service Networking, DNS, and Network Policies. It relies on CNI plugins to implement networking while Kubernetes manages routing, service discovery, and load balancing.
+Kubernetes Networking enables communication between Pods, Services, and external clients using Pod Networking, Service Networking, DNS, and Network Policies. Kubernetes defines the networking model, while CNI plugins implement it.
 
 ---
 
@@ -327,19 +284,19 @@ Kubernetes Networking provides seamless communication between Pods, Services, an
 
 ## Overview
 
-Pod Networking enables communication between Pods across the Kubernetes cluster.
+Pod Networking allows Pods to communicate across the Kubernetes cluster.
 
 Every Pod receives:
 
-- A unique IP address
-- Direct network connectivity
-- No NAT between Pods
+- One unique IP address
+- Direct connectivity with every other Pod
+- Shared IP for all containers inside the Pod
 
-Pods can communicate regardless of which Node they run on.
+Unlike Docker bridge networking, Kubernetes Pods communicate **without NAT**.
 
 > **Interview Tip**
 >
-> Every Pod gets **one IP**, shared by all containers inside that Pod.
+> Pod IPs are **ephemeral** and change whenever a Pod is recreated.
 
 ---
 
@@ -347,10 +304,10 @@ Pods can communicate regardless of which Node they run on.
 
 Pod Networking enables:
 
-- Microservices communication
-- Backend communication
-- Cross-node networking
-- Container communication
+- Pod-to-Pod communication
+- Microservices architecture
+- Cross-node communication
+- Internal application networking
 
 ---
 
@@ -358,20 +315,12 @@ Pod Networking enables:
 
 ```mermaid
 flowchart LR
+    PodA[Pod A]
+    PodB[Pod B]
+    PodC[Pod C]
 
-Node1
-
-Pod A
-
-↔
-
-Pod B
-
-↔
-
-Pod C
-
-Node2
+    PodA <--> PodB
+    PodB <--> PodC
 ```
 
 ---
@@ -379,21 +328,21 @@ Node2
 ## Key Components
 
 | Component | Purpose |
-|-----------|----------|
-| Pod IP | Unique Pod address |
-| CNI Plugin | Assigns IP and networking |
-| Node Network | Connects Pods across Nodes |
+|------------|---------|
+| Pod IP | Unique address |
+| Node Network | Connects Pods |
+| CNI Plugin | Assigns networking |
 
 ---
 
 ## Types (if applicable)
 
-Common CNI Plugins
+Popular CNI Plugins
 
-| Plugin | Common Usage |
-|----------|--------------|
-| Calico | Security + Networking |
-| Flannel | Simple networking |
+| Plugin | Usage |
+|----------|-------|
+| Calico | Networking + Security |
+| Flannel | Basic networking |
 | Cilium | eBPF networking |
 | Azure CNI | AKS |
 | AWS VPC CNI | EKS |
@@ -404,35 +353,21 @@ Common CNI Plugins
 
 ```mermaid
 flowchart LR
+    A[Create Pod]
+    B[CNI Assigns IP]
+    C[Pod Starts]
+    D[Communicates]
+    E[Pod Deleted]
+    F[IP Released]
 
-Pod Created
-
-↓
-
-CNI Assigns IP
-
-↓
-
-Pod Starts
-
-↓
-
-Pod Communicates
-
-↓
-
-Pod Deleted
-
-↓
-
-IP Released
+    A --> B --> C --> D --> E --> F
 ```
 
 ---
 
 ## Configuration / Syntax (if applicable)
 
-No YAML configuration required.
+No additional YAML is required.
 
 Networking is automatically configured by the CNI plugin.
 
@@ -440,21 +375,11 @@ Networking is automatically configured by the CNI plugin.
 
 ## Important Commands (if applicable)
 
-View Pod IPs
-
 ```bash
 kubectl get pods -o wide
-```
 
-Check Pod Network
-
-```bash
 kubectl exec -it <pod-name> -- ip addr
-```
 
-Ping another Pod
-
-```bash
 kubectl exec -it <pod-name> -- ping <pod-ip>
 ```
 
@@ -463,49 +388,49 @@ kubectl exec -it <pod-name> -- ping <pod-ip>
 ## Important Files (if applicable)
 
 | File | Purpose |
-|------|----------|
-| deployment.yaml | Pod definition |
+|------|---------|
+| deployment.yaml | Pod configuration |
 
 ---
 
 ## Real-World Use Cases
 
-- Backend API communication
-- Database connectivity
+- Backend APIs
+- Database communication
 - Microservices
-- Internal communication
+- Internal cluster communication
 
 ---
 
 ## Advantages
 
-- Direct Pod communication
-- Flat networking
+- Direct communication
 - No NAT
-- Simple routing
+- Simple networking
+- Cross-node connectivity
 
 ---
 
 ## Limitations
 
-- Pod IP changes after recreation
-- Applications should not depend on Pod IPs
+- Pod IP changes
+- Applications should never depend on Pod IPs
 
 ---
 
 ## Common Interview Questions (Concept Only)
 
-- Does every Pod get an IP?
+- Does every Pod receive an IP?
 - Can Pods communicate across Nodes?
-- Why are Pod IPs temporary?
 - Who assigns Pod IPs?
+- Why are Pod IPs temporary?
 
 ---
 
 ## Common Mistakes
 
 - Using Pod IPs permanently
-- Assuming each container has a separate IP
+- Assuming every container gets its own IP
 
 ---
 
@@ -521,7 +446,7 @@ kubectl exec -it <pod-name> -- ip addr
 
 ## Summary
 
-Pod Networking assigns every Pod a unique IP address, enabling direct communication across the Kubernetes cluster without NAT.
+Pod Networking assigns a unique IP address to every Pod, enabling direct communication throughout the Kubernetes cluster.
 
 ---
 
@@ -529,7 +454,7 @@ Pod Networking assigns every Pod a unique IP address, enabling direct communicat
 
 ## Overview
 
-Pods are temporary and frequently recreated. Their IP addresses change over time.
+Pods are temporary and frequently recreated.
 
 A **Service** provides:
 
@@ -538,7 +463,7 @@ A **Service** provides:
 - Load balancing
 - Service discovery
 
-Applications should communicate through Services instead of Pod IPs.
+Applications communicate with Services instead of Pod IPs.
 
 ---
 
@@ -557,20 +482,16 @@ Service Networking provides:
 
 ```mermaid
 flowchart LR
+    Client[Client]
+    Service[Service]
+    Pod1[Pod 1]
+    Pod2[Pod 2]
+    Pod3[Pod 3]
 
-Client
-
-↓
-
-Service
-
-↓
-
-Pod1
-
-Pod2
-
-Pod3
+    Client --> Service
+    Service --> Pod1
+    Service --> Pod2
+    Service --> Pod3
 ```
 
 ---
@@ -578,10 +499,10 @@ Pod3
 ## Key Components
 
 | Component | Purpose |
-|-----------|----------|
+|------------|---------|
 | Service | Stable endpoint |
-| Selector | Select Pods |
-| Endpoints | Matching Pods |
+| Selector | Finds Pods |
+| Endpoints | Backend Pods |
 | kube-proxy | Routes traffic |
 
 ---
@@ -599,20 +520,12 @@ Pod3
 
 ```mermaid
 flowchart LR
+    A[Create Service]
+    B[Match Labels]
+    C[Create Endpoints]
+    D[Load Balance Requests]
 
-Create Service
-
-↓
-
-Find Matching Pods
-
-↓
-
-Create Endpoints
-
-↓
-
-Load Balance Requests
+    A --> B --> C --> D
 ```
 
 ---
@@ -641,38 +554,38 @@ kubectl describe svc nginx-service
 ## Important Files (if applicable)
 
 | File | Purpose |
-|------|----------|
+|------|---------|
 | service.yaml | Service definition |
 
 ---
 
 ## Real-World Use Cases
 
-- Backend APIs
-- Database Services
-- Internal communication
 - Web applications
+- Backend APIs
+- Database access
+- Internal Services
 
 ---
 
 ## Advantages
 
-- Stable networking
-- Automatic load balancing
+- Stable IP
+- Load balancing
 - Service discovery
 
 ---
 
 ## Limitations
 
-- Incorrect selectors break routing
-- Pod IP changes still occur
+- Incorrect selectors prevent routing
+- Pod IPs still change
 
 ---
 
 ## Common Interview Questions (Concept Only)
 
-- Why use Services?
+- Why are Services needed?
 - How does kube-proxy work?
 - What are Endpoints?
 
@@ -697,7 +610,7 @@ kubectl describe svc nginx-service
 
 ## Summary
 
-Service Networking provides stable networking for dynamic Pods through Services, Endpoints, and kube-proxy.
+Service Networking provides stable communication and load balancing for dynamic Pods.
 
 ---
 
@@ -705,9 +618,9 @@ Service Networking provides stable networking for dynamic Pods through Services,
 
 ## Overview
 
-Kubernetes automatically creates DNS records for Services using **CoreDNS**.
+CoreDNS automatically creates DNS records for Kubernetes Services.
 
-Applications communicate using Service names rather than IP addresses.
+Applications communicate using Service names instead of IP addresses.
 
 Example:
 
@@ -727,9 +640,9 @@ mysql
 
 DNS provides:
 
-- Automatic Service discovery
+- Automatic service discovery
 - Stable communication
-- Simplified application configuration
+- Simplified configuration
 
 ---
 
@@ -737,20 +650,14 @@ DNS provides:
 
 ```mermaid
 flowchart LR
+    App[Application]
+    CoreDNS[CoreDNS]
+    Service[Service]
+    Pod[Target Pod]
 
-Application
-
-↓
-
-CoreDNS
-
-↓
-
-Service
-
-↓
-
-Pod
+    App --> CoreDNS
+    CoreDNS --> Service
+    Service --> Pod
 ```
 
 ---
@@ -758,9 +665,9 @@ Pod
 ## Key Components
 
 | Component | Purpose |
-|-----------|----------|
-| CoreDNS | DNS server |
-| Service Name | Hostname |
+|------------|---------|
+| CoreDNS | DNS Server |
+| Service DNS | Hostname |
 | Cluster Domain | cluster.local |
 
 ---
@@ -771,7 +678,7 @@ DNS Records
 
 - Service DNS
 - Headless Service DNS
-- Pod DNS (limited use)
+- Pod DNS (limited)
 
 ---
 
@@ -779,27 +686,17 @@ DNS Records
 
 ```mermaid
 flowchart LR
+    A[Create Service]
+    B[CoreDNS Creates Record]
+    C[Application Resolves DNS]
+    D[Traffic Routed]
 
-Service Created
-
-↓
-
-DNS Record Generated
-
-↓
-
-Application Resolves Name
-
-↓
-
-Traffic Routed
+    A --> B --> C --> D
 ```
 
 ---
 
 ## Configuration / Syntax (if applicable)
-
-Example
 
 ```
 nginx.default.svc.cluster.local
@@ -809,15 +706,9 @@ nginx.default.svc.cluster.local
 
 ## Important Commands (if applicable)
 
-Test DNS
-
 ```bash
 kubectl exec -it <pod-name> -- nslookup kubernetes.default
-```
 
-View CoreDNS
-
-```bash
 kubectl get pods -n kube-system
 ```
 
@@ -826,15 +717,15 @@ kubectl get pods -n kube-system
 ## Important Files (if applicable)
 
 | File | Purpose |
-|------|----------|
-| coredns ConfigMap | DNS configuration |
+|------|---------|
+| CoreDNS ConfigMap | DNS configuration |
 
 ---
 
 ## Real-World Use Cases
 
-- Database connections
 - Internal APIs
+- Database communication
 - Service discovery
 
 ---
@@ -842,30 +733,30 @@ kubectl get pods -n kube-system
 ## Advantages
 
 - Automatic discovery
+- Stable names
 - No hardcoded IPs
-- Stable communication
 
 ---
 
 ## Limitations
 
 - Depends on CoreDNS
-- DNS issues affect applications
+- DNS failures impact applications
 
 ---
 
 ## Common Interview Questions (Concept Only)
 
 - What is CoreDNS?
-- How does Service Discovery work?
 - What is cluster.local?
+- How does Service Discovery work?
 
 ---
 
 ## Common Mistakes
 
-- Using Service IP instead of DNS
-- Ignoring DNS failures
+- Hardcoding IPs
+- Ignoring DNS issues
 
 ---
 
@@ -881,7 +772,7 @@ kubectl get pods -n kube-system
 
 ## Summary
 
-CoreDNS automatically creates DNS records for Services, enabling applications to communicate using stable hostnames instead of IP addresses.
+CoreDNS enables automatic Service discovery by providing DNS records for Kubernetes Services.
 
 ---
 
@@ -889,30 +780,27 @@ CoreDNS automatically creates DNS records for Services, enabling applications to
 
 ## Overview
 
-Network Policies define how Pods communicate with each other and with external networks.
+Network Policies control which Pods can communicate with other Pods or external systems.
 
-By default:
+By default, Kubernetes allows unrestricted Pod-to-Pod communication.
 
-- All Pods can communicate with each other.
-- Network Policies restrict this communication.
-
-They provide **Layer 3 and Layer 4** traffic filtering (IP addresses, ports, and protocols).
+Network Policies enforce **Layer 3 (IP)** and **Layer 4 (Port/Protocol)** traffic filtering.
 
 > **Interview Tip**
 >
-> Network Policies require a CNI plugin that supports them (such as Calico, Cilium, or Azure CNI powered by Cilium). Without support from the CNI, creating a NetworkPolicy object has no effect.
+> Network Policies only work if the CNI plugin supports them.
 
 ---
 
 ## Why It Is Used
 
-Network Policies help:
+Network Policies provide:
 
-- Secure applications
-- Isolate workloads
-- Protect databases
-- Enforce Zero Trust networking
-- Meet compliance requirements
+- Pod isolation
+- Application security
+- Zero Trust networking
+- Compliance
+- Database protection
 
 ---
 
@@ -920,18 +808,12 @@ Network Policies help:
 
 ```mermaid
 flowchart LR
+    PodA[Frontend Pod]
+    PodB[Backend Pod]
+    PodC[Unauthorized Pod]
 
-Pod A
-
--- Allow -->
-
-Pod B
-
-Pod C
-
--. Deny .->
-
-Pod B
+    PodA -->|Allowed| PodB
+    PodC -. Blocked .-> PodB
 ```
 
 ---
@@ -939,22 +821,22 @@ Pod B
 ## Key Components
 
 | Component | Purpose |
-|-----------|----------|
+|------------|---------|
 | Pod Selector | Select Pods |
-| Ingress | Incoming traffic rules |
-| Egress | Outgoing traffic rules |
 | Namespace Selector | Select namespaces |
-| IP Block | External IP filtering |
+| Ingress Rules | Incoming traffic |
+| Egress Rules | Outgoing traffic |
+| IPBlock | External IP filtering |
 
 ---
 
 ## Types (if applicable)
 
-| Policy Type | Description |
-|-------------|-------------|
+| Type | Purpose |
+|------|---------|
 | Ingress | Controls incoming traffic |
 | Egress | Controls outgoing traffic |
-| Both | Controls both directions |
+| Both | Bidirectional control |
 
 ---
 
@@ -962,20 +844,12 @@ Pod B
 
 ```mermaid
 flowchart LR
+    A[Create Network Policy]
+    B[Select Pods]
+    C[Apply Rules]
+    D[Traffic Allowed or Blocked]
 
-Create Policy
-
-↓
-
-Select Pods
-
-↓
-
-Apply Rules
-
-↓
-
-Traffic Allowed or Blocked
+    A --> B --> C --> D
 ```
 
 ---
@@ -1002,8 +876,8 @@ kubectl describe networkpolicy
 ## Important Files (if applicable)
 
 | File | Purpose |
-|------|----------|
-| networkpolicy.yaml | Network security rules |
+|------|---------|
+| networkpolicy.yaml | Network policy definition |
 
 ---
 
@@ -1011,46 +885,46 @@ kubectl describe networkpolicy
 
 - Secure databases
 - Namespace isolation
-- PCI-DSS compliance
-- Financial applications
-- Healthcare workloads
-- Zero Trust networking
+- PCI-DSS
+- Healthcare
+- Banking
+- Zero Trust
 
 ---
 
 ## Advantages
 
-- Improves security
-- Fine-grained traffic control
+- Fine-grained security
 - Reduces attack surface
-- Supports micro-segmentation
+- Pod isolation
+- Supports compliance
 
 ---
 
 ## Limitations
 
 - Requires compatible CNI
-- Can accidentally block legitimate traffic
-- Does not provide encryption
+- Misconfiguration can block traffic
+- Does not encrypt traffic
 
 ---
 
 ## Common Interview Questions (Concept Only)
 
 - What is a Network Policy?
-- What is the difference between Ingress and Egress?
-- Do Network Policies work without a CNI plugin?
+- Difference between Ingress and Egress?
 - Are Pods isolated by default?
-- How do Network Policies select Pods?
+- Do Network Policies work without CNI support?
+- How are Pods selected?
 
 ---
 
 ## Common Mistakes
 
-- Forgetting DNS traffic
+- Blocking DNS
 - Incorrect Pod selectors
 - Assuming every CNI supports Network Policies
-- Blocking application communication unintentionally
+- Forgetting Egress rules
 
 ---
 
@@ -1058,10 +932,10 @@ kubectl describe networkpolicy
 
 | Problem | Cause | Solution |
 |----------|--------|----------|
-| Pod cannot reach another Pod | NetworkPolicy blocks traffic | Review ingress/egress rules |
-| Policy has no effect | Unsupported CNI | Verify CNI supports NetworkPolicy |
-| DNS resolution fails | DNS traffic blocked | Allow access to CoreDNS |
-| Traffic unexpectedly denied | Selector mismatch | Verify labels and namespace selectors |
+| Pod communication blocked | Network Policy | Verify rules |
+| Policy has no effect | Unsupported CNI | Verify CNI |
+| DNS failure | DNS traffic blocked | Allow CoreDNS |
+| Unexpected deny | Wrong selector | Verify labels |
 
 Useful Commands
 
@@ -1079,4 +953,4 @@ kubectl exec -it <pod-name> -- nslookup kubernetes.default
 
 ## Summary
 
-Network Policies secure Kubernetes networking by controlling ingress and egress traffic between Pods, namespaces, and external networks. Combined with a compatible CNI plugin, they enable fine-grained traffic control, workload isolation, and Zero Trust networking for production Kubernetes clusters.
+Network Policies secure Kubernetes networking by controlling ingress and egress traffic between Pods, namespaces, and external networks. They are essential for implementing Zero Trust networking and securing production Kubernetes clusters.
