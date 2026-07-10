@@ -2,35 +2,38 @@
 
 ## Overview
 
-GitOps Integration with Helm combines **Helm's package management** capabilities with **GitOps principles** to automate Kubernetes deployments.
+GitOps Integration combines **Helm** with **GitOps tools** like **Argo CD** and **Flux** to automate Kubernetes deployments.
 
-In a GitOps workflow:
+In GitOps:
 
-- Git stores the desired state.
-- Helm packages and templates Kubernetes applications.
-- GitOps tools (such as Argo CD and Flux) continuously monitor Git repositories.
-- Changes committed to Git are automatically synchronized with Kubernetes clusters.
+- Git stores the desired state of the application.
+- Helm packages and templates Kubernetes resources.
+- GitOps controllers continuously monitor Git repositories.
+- Any change committed to Git is automatically synchronized with Kubernetes.
 
-Unlike traditional CI/CD, GitOps uses a **pull-based deployment model**, where the cluster continuously pulls changes from Git instead of receiving push-based deployments.
+Unlike traditional CI/CD (push-based deployments), GitOps follows a **pull-based deployment model**, where the Kubernetes cluster continuously pulls changes from Git.
 
 > **Interview Tip**
 >
-> Helm **does not perform GitOps by itself**. It works together with GitOps tools like **Argo CD** and **Flux**, which use Helm Charts as deployment sources.
+> **Helm is a package manager and templating engine.**
+> **Argo CD and Flux are GitOps controllers.**
+>
+> Helm **does not perform GitOps** by itself.
 
 ---
 
 ## Why It Is Used
 
-GitOps Integration helps to:
+GitOps with Helm is used to:
 
 - Automate Kubernetes deployments
 - Keep Git as the single source of truth
-- Enable version-controlled infrastructure
+- Reduce manual deployments
 - Detect configuration drift
-- Automatically synchronize clusters
-- Support self-healing deployments
+- Enable automatic synchronization
 - Improve deployment consistency
-- Simplify rollback and auditing
+- Support self-healing applications
+- Simplify rollback using Git history
 
 ---
 
@@ -39,34 +42,23 @@ GitOps Integration helps to:
 ```mermaid
 flowchart LR
 
-Developer
-      │
-      ▼
-Git Repository
-      │
-      ▼
-GitOps Controller
-(Argo CD / Flux)
-      │
-      ▼
-Helm Chart Rendering
-      │
-      ▼
-Kubernetes API Server
-      │
-      ▼
-Kubernetes Cluster
+A[Developer] --> B[Git Repository]
+B --> C[GitOps Controller<br/>Argo CD / Flux]
+C --> D[Render Helm Chart]
+D --> E[Kubernetes API Server]
+E --> F[Kubernetes Cluster]
+F --> G[Running Application]
 ```
 
 ### Working Process
 
-1. Developer modifies a Helm Chart or values file.
+1. Developer updates Helm Chart or values file.
 2. Changes are committed to Git.
-3. GitOps controller detects the change.
-4. Helm renders Kubernetes manifests.
-5. Kubernetes resources are synchronized.
-6. Cluster state matches the Git repository.
-7. Any manual changes (drift) are corrected automatically.
+3. GitOps controller detects repository changes.
+4. Helm templates are rendered into Kubernetes manifests.
+5. Manifests are applied to the cluster.
+6. Cluster state is continuously compared with Git.
+7. Drift is automatically corrected if enabled.
 
 ---
 
@@ -74,12 +66,12 @@ Kubernetes Cluster
 
 | Component | Purpose |
 |-----------|----------|
-| Git Repository | Stores desired state |
-| Helm Chart | Application package |
-| Values Files | Environment configuration |
-| GitOps Controller | Watches Git repository |
-| Kubernetes Cluster | Deployment target |
-| Git | Source of Truth |
+| Git Repository | Stores desired application state |
+| Helm Chart | Packages Kubernetes resources |
+| Values Files | Environment-specific configuration |
+| GitOps Controller | Monitors Git and synchronizes cluster |
+| Kubernetes API | Applies rendered manifests |
+| Kubernetes Cluster | Runs workloads |
 
 ---
 
@@ -88,9 +80,9 @@ Kubernetes Cluster
 | Integration | Purpose |
 |-------------|----------|
 | Helm + Argo CD | GitOps Continuous Delivery |
-| Helm + Flux | Kubernetes GitOps |
+| Helm + Flux | Kubernetes-native GitOps |
 | Declarative Deployment | Desired-state deployment |
-| Pull-Based Deployment | Automatic synchronization |
+| Pull-Based Deployment | Continuous synchronization |
 
 ---
 
@@ -99,35 +91,30 @@ Kubernetes Cluster
 ```mermaid
 flowchart LR
 
-Code Change
-      │
-      ▼
-Git Commit
-      │
-      ▼
-GitOps Controller
-      │
-      ▼
-Helm Template Rendering
-      │
-      ▼
-Cluster Synchronization
-      │
-      ▼
-Application Running
+A[Developer Commit]
+A --> B[Git Repository]
+B --> C[GitOps Controller Detects Change]
+C --> D[Render Helm Templates]
+D --> E[Compare Desired vs Actual State]
+E --> F[Synchronize Cluster]
+F --> G[Monitor Health]
 ```
 
 ---
 
 ## Configuration / Syntax (if applicable)
 
-Typical Helm deployment used by GitOps tools:
+Render Helm templates locally:
 
 ```bash
-helm template
+helm template myapp ./chart
 ```
 
-Argo CD and Flux internally render Helm Charts before applying them to Kubernetes.
+Typical GitOps deployment:
+
+- GitOps controller references a Helm chart.
+- Helm renders Kubernetes manifests.
+- Controller applies manifests to the cluster.
 
 ---
 
@@ -144,7 +131,11 @@ helm dependency update
 
 argocd app sync
 
-flux reconcile
+argocd app get
+
+flux reconcile source git
+
+flux reconcile helmrelease
 ```
 
 ---
@@ -160,47 +151,49 @@ values-dev.yaml
 
 values-prod.yaml
 
-Application.yaml
+templates/
 
-HelmRelease.yaml
+Application.yaml        # Argo CD
+
+HelmRelease.yaml        # Flux
 
 Git Repository
-
-templates/
 ```
 
 ---
 
 ## Real-World Use Cases
 
-- Kubernetes GitOps
-- Production deployments
+- GitOps-based Kubernetes deployments
 - Multi-cluster management
-- Automated synchronization
-- Continuous Delivery
+- Production Continuous Delivery
 - Infrastructure as Code
-- Disaster recovery
+- Automated rollback
+- Self-healing deployments
+- Environment-specific deployments
 
 ---
 
 ## Advantages
 
-- Git as the single source of truth
-- Fully automated deployments
-- Version-controlled infrastructure
+- Git becomes the single source of truth
+- Automated deployments
+- Consistent environments
 - Easy rollback using Git history
 - Drift detection
-- Self-healing deployments
-- Improved auditing
+- Self-healing
+- Audit trail through Git commits
+- Supports multi-cluster deployments
 
 ---
 
 ## Limitations
 
-- Requires GitOps tooling
-- Learning curve for GitOps workflows
+- Requires GitOps tools
+- Learning curve for GitOps concepts
 - Manual cluster changes are overwritten
-- Repository organization is critical
+- Git repository availability is critical
+- Requires proper repository organization
 
 ---
 
@@ -208,11 +201,11 @@ templates/
 
 - What is GitOps?
 - How does Helm support GitOps?
-- Does Helm perform GitOps by itself?
-- Difference between CI/CD and GitOps?
-- Why is Git the source of truth?
-- What is a pull-based deployment?
-- How is configuration drift detected?
+- Can Helm perform GitOps by itself?
+- What is the difference between CI/CD and GitOps?
+- Why is Git called the source of truth?
+- What is pull-based deployment?
+- How does drift detection work?
 - What is declarative deployment?
 - Difference between Argo CD and Flux?
 - Why use Helm with GitOps?
@@ -222,11 +215,11 @@ templates/
 ## Common Mistakes
 
 - Editing Kubernetes resources manually
-- Treating Helm as a GitOps controller
-- Storing production secrets in Git
 - Using mutable image tags like `latest`
+- Hardcoding production values
+- Treating Helm as a GitOps controller
+- Storing secrets directly in Git
 - Ignoring synchronization failures
-- Mixing imperative and declarative deployments
 
 ---
 
@@ -235,21 +228,23 @@ templates/
 | Problem | Cause | Solution |
 |----------|-------|----------|
 | Application OutOfSync | Git differs from cluster | Synchronize application |
-| Sync failed | Invalid Helm Chart | Run `helm lint` |
-| Template error | Invalid values | Validate values files |
-| Image not updated | Cached image tag | Use immutable version tags |
-| Drift detected | Manual cluster change | Update Git repository instead |
-| Deployment failed | Kubernetes validation error | Check rendered manifests and cluster events |
+| Sync failed | Invalid Helm chart | Run `helm lint` |
+| Template rendering failed | Invalid values | Verify values files |
+| Image not updated | Mutable image tag | Use versioned image tags |
+| Drift repeatedly detected | Manual cluster changes | Update Git instead of cluster |
+| Deployment failed | Kubernetes validation error | Inspect rendered manifests and cluster events |
 
 ---
 
 ## Summary
 
-GitOps Integration combines Helm with GitOps controllers like Argo CD and Flux to provide automated, declarative, pull-based Kubernetes deployments using Git as the single source of truth.
+GitOps Integration combines Helm with GitOps controllers to automate Kubernetes deployments using Git as the single source of truth. Helm renders application manifests, while GitOps controllers continuously synchronize the cluster to match the desired state stored in Git.
 
 > **Interview Tip**
 >
-> **Helm packages applications, while GitOps tools continuously deploy and synchronize them.**
+> **Helm packages applications.**
+>
+> **Argo CD and Flux deploy them using GitOps.**
 
 ---
 
@@ -257,23 +252,25 @@ GitOps Integration combines Helm with GitOps controllers like Argo CD and Flux t
 
 ## Overview
 
-Argo CD is a GitOps Continuous Delivery tool that deploys Helm Charts directly from Git repositories.
+Argo CD is a GitOps Continuous Delivery tool that deploys **Helm Charts directly from Git repositories**.
 
-It continuously monitors Git and automatically synchronizes Kubernetes clusters.
+Argo CD continuously monitors Git and automatically synchronizes Kubernetes clusters.
 
 > **Important Interview Point**
 >
-> Argo CD **uses Helm as a template engine**. It does **not** execute `helm install` or manage Helm releases like the Helm CLI.
+> Argo CD **uses Helm as a template engine**.
+>
+> It **does not execute** `helm install` or manage Helm releases like the Helm CLI.
 
 ---
 
 ## Why It Is Used
 
+- Continuous Delivery
 - GitOps deployments
-- Continuous synchronization
 - Drift detection
 - Self-healing
-- Multi-cluster deployments
+- Automated synchronization
 
 ---
 
@@ -282,32 +279,28 @@ It continuously monitors Git and automatically synchronizes Kubernetes clusters.
 ```mermaid
 flowchart LR
 
-Git Repository
-      │
-      ▼
-Argo CD
-      │
-      ▼
-Helm Template Rendering
-      │
-      ▼
-Kubernetes Cluster
+A[Git Repository]
+A --> B[Argo CD]
+B --> C[Render Helm Chart]
+C --> D[Kubernetes Cluster]
 ```
 
 ---
 
 ## Key Components
 
-- Git Repository
-- Helm Chart
-- Application CR
-- Argo CD Controller
+| Component | Purpose |
+|-----------|----------|
+| Git Repository | Stores Helm charts |
+| Argo CD | GitOps controller |
+| Helm | Template rendering |
+| Kubernetes Cluster | Deployment target |
 
 ---
 
 ## Types (if applicable)
 
-GitOps Continuous Delivery
+- GitOps Continuous Delivery
 
 ---
 
@@ -316,32 +309,30 @@ GitOps Continuous Delivery
 ```mermaid
 flowchart LR
 
-Commit
-      │
-      ▼
-Argo CD Detects Change
-      │
-      ▼
-Render Helm Chart
-      │
-      ▼
-Sync Cluster
+A[Commit to Git]
+A --> B[Argo CD Detects Change]
+B --> C[Render Helm Templates]
+C --> D[Sync Cluster]
 ```
 
 ---
 
 ## Configuration / Syntax (if applicable)
 
-Argo CD references Helm Charts in the `Application` resource.
+Argo CD references a Helm chart in an `Application` resource.
 
 ---
 
 ## Important Commands (if applicable)
 
 ```bash
+argocd app create
+
 argocd app sync
 
 argocd app get
+
+argocd app history
 ```
 
 ---
@@ -360,49 +351,55 @@ values.yaml
 
 ## Real-World Use Cases
 
-- AKS
-- EKS
-- GKE
+- AKS deployments
+- EKS deployments
+- GKE deployments
 - Multi-cluster GitOps
 
 ---
 
 ## Advantages
 
-- Self-healing
+- Continuous synchronization
 - Drift detection
-- Git-based deployments
+- Self-healing
+- Git-based auditing
 
 ---
 
 ## Limitations
 
 - Requires Argo CD installation
+- Git repository must remain available
 
 ---
 
 ## Common Interview Questions (Concept Only)
 
 - Does Argo CD execute Helm commands?
-- How does Argo CD use Helm?
+- How does Argo CD deploy Helm charts?
+- What is the Application resource?
 
 ---
 
 ## Common Mistakes
 
-- Editing resources manually
+- Treating Argo CD as a Helm release manager
+- Making manual cluster changes
 
 ---
 
 ## Troubleshooting
 
-Verify synchronization status.
+- Verify Git connectivity.
+- Check application synchronization status.
+- Validate Helm templates.
 
 ---
 
 ## Summary
 
-Argo CD renders Helm Charts from Git and continuously synchronizes Kubernetes clusters.
+Argo CD continuously synchronizes Kubernetes clusters by rendering Helm charts stored in Git repositories.
 
 ---
 
@@ -410,21 +407,22 @@ Argo CD renders Helm Charts from Git and continuously synchronizes Kubernetes cl
 
 ## Overview
 
-Flux is a GitOps Continuous Delivery tool that supports Helm through the **Helm Controller**.
+Flux is a Kubernetes-native GitOps tool that manages Helm deployments using the **Helm Controller**.
 
-Flux manages Helm releases declaratively using Kubernetes custom resources.
+Flux deploys applications declaratively through the **HelmRelease** custom resource.
 
 > **Interview Tip**
 >
-> Flux uses the **HelmRelease** custom resource instead of executing Helm commands manually.
+> Flux manages Helm deployments using **HelmRelease**, not manual Helm CLI commands.
 
 ---
 
 ## Why It Is Used
 
-- GitOps automation
-- Kubernetes-native deployments
-- Helm release management
+- Kubernetes-native GitOps
+- Automated deployments
+- Continuous synchronization
+- Declarative Helm management
 
 ---
 
@@ -433,32 +431,29 @@ Flux manages Helm releases declaratively using Kubernetes custom resources.
 ```mermaid
 flowchart LR
 
-Git Repository
-      │
-      ▼
-Flux Source Controller
-      │
-      ▼
-Helm Controller
-      │
-      ▼
-Kubernetes
+A[Git Repository]
+A --> B[Flux Source Controller]
+B --> C[Helm Controller]
+C --> D[HelmRelease]
+D --> E[Kubernetes Cluster]
 ```
 
 ---
 
 ## Key Components
 
-- Source Controller
-- Helm Controller
-- HelmRelease
-- Git Repository
+| Component | Purpose |
+|-----------|----------|
+| Source Controller | Watches Git |
+| Helm Controller | Manages Helm releases |
+| HelmRelease | Defines deployment |
+| Kubernetes | Runs workloads |
 
 ---
 
 ## Types (if applicable)
 
-GitOps deployment
+- GitOps deployment
 
 ---
 
@@ -467,23 +462,17 @@ GitOps deployment
 ```mermaid
 flowchart LR
 
-Git Commit
-      │
-      ▼
-Flux Detects Change
-      │
-      ▼
-HelmRelease
-      │
-      ▼
-Deploy
+A[Git Commit]
+A --> B[Flux Detects Change]
+B --> C[Update HelmRelease]
+C --> D[Deploy Application]
 ```
 
 ---
 
 ## Configuration / Syntax (if applicable)
 
-Flux manages deployments using:
+Flux deploys applications using:
 
 ```
 HelmRelease.yaml
@@ -494,7 +483,9 @@ HelmRelease.yaml
 ## Important Commands (if applicable)
 
 ```bash
-flux reconcile
+flux reconcile source git
+
+flux reconcile helmrelease
 
 flux get helmreleases
 ```
@@ -511,46 +502,49 @@ HelmRelease.yaml
 
 ## Real-World Use Cases
 
-- Kubernetes automation
-- Continuous deployment
+- Enterprise Kubernetes
+- Multi-cluster deployments
+- Continuous Delivery
 
 ---
 
 ## Advantages
 
 - Kubernetes-native
-- Automated synchronization
+- Automated reconciliation
+- Git-based deployment
 
 ---
 
 ## Limitations
 
-- Flux components required
+- Requires Flux components
+- Additional CRDs
 
 ---
 
 ## Common Interview Questions (Concept Only)
 
 - What is HelmRelease?
-- How does Flux deploy Helm Charts?
+- How does Flux deploy Helm charts?
 
 ---
 
 ## Common Mistakes
 
-- Manual cluster modifications
+- Editing resources manually
 
 ---
 
 ## Troubleshooting
 
-Verify HelmRelease status.
+Verify HelmRelease status and Git synchronization.
 
 ---
 
 ## Summary
 
-Flux manages Helm deployments declaratively using the Helm Controller.
+Flux continuously deploys Helm charts using the Helm Controller and HelmRelease resources.
 
 ---
 
@@ -558,11 +552,9 @@ Flux manages Helm deployments declaratively using the Helm Controller.
 
 ## Overview
 
-Declarative Deployment means describing the **desired state** of an application instead of manually executing deployment steps.
+Declarative Deployment means defining the desired application state in configuration files instead of manually executing deployment commands.
 
-Helm Charts define Kubernetes resources declaratively using YAML templates.
-
-GitOps tools continuously ensure that the cluster matches the declared state.
+Helm templates generate Kubernetes manifests from declarative YAML configuration.
 
 ---
 
@@ -580,22 +572,27 @@ GitOps tools continuously ensure that the cluster matches the declared state.
 ```mermaid
 flowchart LR
 
-Desired State --> Git --> Kubernetes
+A[Desired State]
+A --> B[Git Repository]
+B --> C[Helm Templates]
+C --> D[Kubernetes Cluster]
 ```
 
 ---
 
 ## Key Components
 
-- YAML
-- Helm Charts
-- Git
+| Component | Purpose |
+|-----------|----------|
+| YAML | Desired state |
+| Helm Chart | Templates |
+| Git | Version control |
 
 ---
 
 ## Types (if applicable)
 
-Desired-state deployment
+- Desired-state deployment
 
 ---
 
@@ -604,14 +601,16 @@ Desired-state deployment
 ```mermaid
 flowchart LR
 
-Edit --> Commit --> Sync
+A[Update YAML]
+A --> B[Commit to Git]
+B --> C[Deploy]
 ```
 
 ---
 
 ## Configuration / Syntax (if applicable)
 
-Helm templates generate declarative Kubernetes manifests.
+Helm templates render declarative Kubernetes manifests.
 
 ---
 
@@ -643,24 +642,27 @@ values.yaml
 ## Advantages
 
 - Repeatable deployments
+- Easy auditing
+- Predictable environments
 
 ---
 
 ## Limitations
 
-- Requires proper Git management
+- Requires disciplined Git workflow
 
 ---
 
 ## Common Interview Questions (Concept Only)
 
 - What is declarative deployment?
+- How is it different from imperative deployment?
 
 ---
 
 ## Common Mistakes
 
-- Mixing imperative commands
+- Mixing imperative and declarative changes
 
 ---
 
@@ -672,7 +674,7 @@ Compare Git with cluster state.
 
 ## Summary
 
-Declarative deployments define the desired Kubernetes state in version-controlled files.
+Declarative deployments define the desired Kubernetes state through version-controlled configuration files.
 
 ---
 
@@ -680,17 +682,18 @@ Declarative deployments define the desired Kubernetes state in version-controlle
 
 ## Overview
 
-Helm serves as the packaging and templating layer within GitOps workflows.
+In GitOps workflows, Helm acts as the application packaging and templating layer, while GitOps controllers automate deployment and synchronization.
 
-GitOps controllers monitor Git repositories, render Helm Charts, and synchronize Kubernetes clusters.
+Helm generates Kubernetes manifests from charts, and GitOps controllers ensure the cluster always matches the desired state stored in Git.
 
 ---
 
 ## Why It Is Used
 
-- Automated deployments
+- Automated Kubernetes deployments
 - Continuous synchronization
-- Version control
+- Version-controlled infrastructure
+- Simplified release management
 
 ---
 
@@ -699,23 +702,29 @@ GitOps controllers monitor Git repositories, render Helm Charts, and synchronize
 ```mermaid
 flowchart LR
 
-Git --> GitOps Controller --> Helm --> Kubernetes
+A[Git Repository]
+A --> B[GitOps Controller]
+B --> C[Helm Template Rendering]
+C --> D[Kubernetes API]
+D --> E[Kubernetes Cluster]
 ```
 
 ---
 
 ## Key Components
 
-- Git
-- Helm
-- GitOps Controller
-- Kubernetes
+| Component | Purpose |
+|-----------|----------|
+| Git | Source of truth |
+| Helm | Package manager |
+| GitOps Controller | Synchronization |
+| Kubernetes | Application platform |
 
 ---
 
 ## Types (if applicable)
 
-Pull-based deployment
+- Pull-based deployment
 
 ---
 
@@ -724,14 +733,18 @@ Pull-based deployment
 ```mermaid
 flowchart LR
 
-Commit --> Detect --> Render --> Sync
+A[Git Commit]
+A --> B[Detect Change]
+B --> C[Render Templates]
+C --> D[Deploy]
+D --> E[Monitor]
 ```
 
 ---
 
 ## Configuration / Syntax (if applicable)
 
-Helm Charts are referenced by GitOps controllers.
+GitOps controllers reference Helm charts directly from Git repositories.
 
 ---
 
@@ -740,9 +753,11 @@ Helm Charts are referenced by GitOps controllers.
 ```bash
 helm template
 
+helm lint
+
 argocd app sync
 
-flux reconcile
+flux reconcile helmrelease
 ```
 
 ---
@@ -766,6 +781,7 @@ HelmRelease.yaml
 - Enterprise GitOps
 - Multi-cluster deployments
 - Platform engineering
+- Continuous Delivery
 
 ---
 
@@ -773,13 +789,15 @@ HelmRelease.yaml
 
 - Automated synchronization
 - Git-based auditing
+- Drift detection
 - Self-healing
 
 ---
 
 ## Limitations
 
-- Requires Git discipline
+- Requires GitOps tooling
+- Strong Git discipline required
 
 ---
 
@@ -787,24 +805,31 @@ HelmRelease.yaml
 
 - Where does Helm fit into GitOps?
 - Why combine Helm with Argo CD or Flux?
+- What is the role of Git in GitOps?
 
 ---
 
 ## Common Mistakes
 
-- Treating Git as backup instead of source of truth
+- Treating Git as backup instead of the source of truth
+- Manual changes directly in Kubernetes
 
 ---
 
 ## Troubleshooting
 
-Verify Git repository synchronization and rendered manifests.
+Verify:
+
+- Git synchronization
+- Rendered Helm manifests
+- Controller status
+- Kubernetes events
 
 ---
 
 ## Summary
 
-Helm provides reusable application packaging, while GitOps tools automate deployment and continuously enforce the desired state stored in Git.
+Helm provides reusable application packaging, while GitOps tools like Argo CD and Flux automate deployment and continuously enforce the desired state stored in Git.
 
 ---
 
@@ -812,20 +837,16 @@ Helm provides reusable application packaging, while GitOps tools automate deploy
 
 ## GitOps Deployment Workflow
 
-```text
-Developer
-      ↓
-Git Commit
-      ↓
-Git Repository
-      ↓
-Argo CD / Flux
-      ↓
-Helm Template Rendering
-      ↓
-Kubernetes API
-      ↓
-Cluster Synchronization
+```mermaid
+flowchart LR
+
+A[Developer]
+A --> B[Git Commit]
+B --> C[Git Repository]
+C --> D[Argo CD / Flux]
+D --> E[Render Helm Chart]
+E --> F[Kubernetes Cluster]
+F --> G[Running Application]
 ```
 
 ---
@@ -836,7 +857,7 @@ Cluster Synchronization
 |--------|--------|
 | Push-based deployment | Pull-based deployment |
 | Pipeline executes deployment | GitOps controller synchronizes cluster |
-| Deployment triggered by pipeline | Deployment triggered by Git changes |
+| Triggered by pipeline | Triggered by Git changes |
 | Jenkins, GitHub Actions, Azure DevOps | Argo CD, Flux |
 
 ---
@@ -846,10 +867,10 @@ Cluster Synchronization
 | Component | Responsibility |
 |-----------|----------------|
 | Helm | Package and render Kubernetes manifests |
-| Git | Store desired state |
-| Argo CD | Synchronize cluster using Git |
+| Git | Store desired application state |
+| Argo CD | Synchronize cluster from Git |
 | Flux | Manage Helm releases declaratively |
-| Kubernetes | Execute desired state |
+| Kubernetes | Run workloads |
 
 ---
 
@@ -857,25 +878,26 @@ Cluster Synchronization
 
 | Argo CD | Flux |
 |----------|------|
-| Uses Application CR | Uses HelmRelease CR |
+| Uses `Application` resource | Uses `HelmRelease` resource |
 | Rich web UI | CLI-first approach |
-| Uses Helm as a rendering engine | Uses Helm Controller to manage releases |
-| Strong visualization and sync status | Kubernetes-native GitOps toolkit |
+| Uses Helm as a rendering engine | Uses Helm Controller |
+| Strong visualization | Kubernetes-native toolkit |
 
 ---
 
 ## Production Best Practices
 
-- Treat Git as the single source of truth; never make permanent manual changes directly in the cluster.
-- Validate Helm charts with `helm lint` and `helm template` before committing changes.
+- Store all deployment configuration in Git.
+- Treat Git as the single source of truth.
+- Validate charts with `helm lint` and `helm template`.
 - Use immutable image tags instead of `latest`.
-- Store secrets outside Git using Kubernetes Secrets or external secret management solutions.
-- Keep separate values files for development, staging, and production environments.
-- Enable automatic synchronization and self-healing only after validating deployment behavior.
-- Monitor synchronization status and resolve drift by updating Git rather than modifying cluster resources.
+- Store secrets outside Git using secure secret management.
+- Maintain separate values files for each environment.
+- Monitor synchronization status regularly.
+- Resolve configuration drift by updating Git, not the cluster.
 
 ---
 
 ## One-line Interview Answer
 
-**GitOps Integration combines Helm with GitOps tools such as Argo CD and Flux to provide declarative, pull-based Kubernetes deployments where Git is the single source of truth, Helm renders application manifests, and GitOps controllers continuously synchronize the cluster with the desired state.**
+**GitOps integrates Helm with controllers like Argo CD and Flux to provide declarative, pull-based Kubernetes deployments where Git is the single source of truth, Helm renders Kubernetes manifests, and GitOps controllers continuously synchronize the cluster with the desired state.**
